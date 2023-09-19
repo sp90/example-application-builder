@@ -1,27 +1,47 @@
 # ExampleApplicationBuilder
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.0-next.4.
+This is to showcase thew new build system in angular - i would love to take a PR on running the server with one of the following webframeworks
 
-## Development server
+- [uWebSockets.js](https://github.com/uNetworking/uWebSockets)
+- [Elysia.js](https://elysiajs.com/)
+- [Hono](https://hono.dev/getting-started/bun)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Lets create a folder with alternative server.ts files and make an angular ssr benchmark
 
-## Code scaffolding
+## Commands
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Dev SSR: `npm run dev:ssr`
+- Build SSR: `npm run build:ssr`
+- Serve SSR: `npm run serve:ssr`
 
-## Build
+## This uses
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- `angular@next`
+- `angular/ssr@next`
+- The CommonEngine from `angular/ssr` 
 
-## Running unit tests
+## Footnotes
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+This is basically a project generated with 
 
-## Running end-to-end tests
+- `ng new appName --standalone --skip-tests`
+- `ng add @angular/ssr`
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Then its upgraded to version 17 using
 
-## Further help
+- `ng update @angular/core@next @angular/cli@next` with the force command because angular/ssr is not compatable with v17 of the core
+- Patch angular/ssr version in the package-json and `npm i`
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Then updating the following files
+
+- `angular.json` - here the config is taken from the angular internal example that was shared as a screenshot
+- `server.ts` - same here [example-file](https://github.com/angular/angular-cli/blob/8f9a0d70cdf692b19574410cebb4d029056263fc/packages/angular/ssr/schematics/ng-add/files/server-builder/server.ts.template#L4)
+- `tsconfig.app.js` - added main.server.ts to includes (IMPORTANT do not add for files)
+
+## Useful info
+- Wanna learn about the [CommonEngine](https://github.com/angular/angular-cli/blob/8f9a0d70cdf692b19574410cebb4d029056263fc/packages/angular/ssr/src/common-engine.ts) here is the source to it
+- builds is about **1s** for cold start `ng serve`
+- `npm run dev:ssr` **~8-10s**
+- Changes are **~200ms** on the initial package
+- `npm run build:ssr` **~8-10s**
+  
